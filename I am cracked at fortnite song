@@ -1,0 +1,50 @@
+from moviepy.editor import *
+
+# Define video parameters
+duration_per_slide = 5  # Duration of each slide in seconds
+fps = 24  # Frames per second
+
+# Define the lyrics
+lyrics = [
+    ("Step into the game, yeah, you know I'm locked and loaded", 5),
+    ("Fortnite on my screen, opponents get exploded", 4),
+    ("From Tilted Towers to the depths of Loot Lake", 4),
+    ("I'm dropping in hot, leaving haters in my wake", 4),
+    ("Building up ramps, double edits on the fly", 4),
+    ("Quick with the shotgun, watch 'em say goodbye", 4),
+    ("My aim's precise, never miss a headshot", 4),
+    ("Victory Royale, yeah, you know I got a lot", 4),
+    ("Got the skins, got the swag, I'm a legend in the making", 4),
+    ("Every match I enter, it's domination I'm forsaking", 4),
+    ("From the first-person view to the third, I'm versatile", 4),
+    ("In this Fortnite world, I'm the one who's worth your while", 4),
+]
+
+# Generate video slides with lyrics
+def generate_slides():
+    clips = []
+    for lyric, duration in lyrics:
+        txt_clip = TextClip(lyric, fontsize=70, color='white').set_duration(duration)
+        clips.append(txt_clip)
+    return clips
+
+# Concatenate video slides
+video_clips = generate_slides()
+final_clip = concatenate_videoclips(video_clips)
+
+# Set video parameters
+final_clip = final_clip.set_duration(sum(duration for _, duration in lyrics))
+final_clip = final_clip.set_fps(fps)
+
+# Export video
+final_clip.write_videofile("fortnite_song.mp4", fps=fps, codec='libx264')
+import pygame
+
+def play_song():
+    pygame.init()
+    pygame.mixer.music.load("fortnite_song.mp3")  # Replace "fortnite_song.mp3" with the path to your song file
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
+
+play_song()
